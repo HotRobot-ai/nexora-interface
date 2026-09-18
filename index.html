@@ -735,6 +735,161 @@
       letter-spacing: 2px;
     }
 
+
+    /* =========================================================
+       INTERACTIVE MODULES / NODE REGISTRATION
+       ========================================================= */
+
+    .module.active {
+      cursor: pointer;
+      opacity: 1;
+      border-color: #24688f;
+      transition: 0.2s ease;
+    }
+
+    .module.active:active {
+      transform: scale(0.985);
+    }
+
+    .module.active .module-state {
+      color: #62e6a7;
+    }
+
+    #nodeView {
+      display: none;
+      min-height: 100vh;
+      background:
+        radial-gradient(
+          circle at 50% 0%,
+          #0b2539 0%,
+          #06131f 30%,
+          #030912 65%,
+          #02050a 100%
+        );
+    }
+
+    .node-shell {
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 22px 18px 35px;
+    }
+
+    .node-back {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: #5bc7ff;
+      padding: 0;
+      margin: 0 0 24px;
+      font-size: 10px;
+      letter-spacing: 2px;
+      cursor: pointer;
+    }
+
+    .node-card {
+      padding: 22px 18px;
+      border: 1px solid #173b51;
+      border-radius: 5px;
+      background:
+        linear-gradient(
+          145deg,
+          rgba(10, 29, 43, 0.94),
+          rgba(4, 12, 20, 0.94)
+        );
+    }
+
+    .node-label {
+      color: #557b92;
+      font-size: 9px;
+      letter-spacing: 3px;
+      margin-bottom: 10px;
+    }
+
+    .node-id {
+      color: #ffffff;
+      font-size: 27px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      margin-bottom: 8px;
+    }
+
+    .node-state {
+      color: #62e6a7;
+      font-size: 9px;
+      letter-spacing: 2px;
+      margin-bottom: 28px;
+    }
+
+    .node-ring {
+      position: relative;
+      width: 155px;
+      height: 155px;
+      margin: 22px auto 28px;
+      border: 1px solid #1f668e;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow:
+        0 0 30px rgba(35, 169, 240, 0.12),
+        inset 0 0 30px rgba(35, 169, 240, 0.06);
+    }
+
+    .node-ring::before {
+      content: "";
+      position: absolute;
+      width: 122px;
+      height: 122px;
+      border: 1px dashed #174866;
+      border-radius: 50%;
+    }
+
+    .node-ring-symbol {
+      position: relative;
+      z-index: 2;
+      color: #e9fbff;
+      font-size: 46px;
+      font-weight: 700;
+      text-shadow:
+        0 0 10px #168bd2,
+        0 0 28px #168bd2;
+    }
+
+    #nodeScanButton {
+      width: 100%;
+      padding: 18px 15px;
+      background:
+        linear-gradient(
+          180deg,
+          #0b94dd,
+          #0873ad
+        );
+      border: 1px solid #36b8ff;
+      border-radius: 5px;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      cursor: pointer;
+    }
+
+    #nodeScanButton:disabled {
+      opacity: 0.55;
+      cursor: default;
+    }
+
+    #nodeStatus {
+      margin-top: 18px;
+      padding: 17px 14px;
+      min-height: 82px;
+      border: 1px solid #17374c;
+      background: rgba(5, 14, 24, 0.78);
+      white-space: pre-line;
+      line-height: 1.7;
+      font-size: 12px;
+    }
+
     /* =========================================================
        TABLET / DESKTOP
        ========================================================= */
@@ -1083,7 +1238,12 @@
 
       <div class="module-grid">
 
-        <div class="module future">
+        <div
+          class="module active"
+          role="button"
+          tabindex="0"
+          onclick="openNodeRegistration()"
+          onkeydown="if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openNodeRegistration(); }">
 
           <div class="module-code">
             INFRASTRUCTURE
@@ -1094,7 +1254,7 @@
           </div>
 
           <div class="module-state">
-            MODULE RESERVED
+            REGISTRATION ONLINE
           </div>
 
         </div>
@@ -1170,6 +1330,103 @@
   </section>
 
 
+  <!-- =======================================================
+       NODE REGISTRATION
+       ======================================================= -->
+
+  <section id="nodeView">
+
+    <div class="node-shell">
+
+      <header class="ops-header">
+
+        <div>
+          <div class="ops-brand-main">
+            NEXORA
+          </div>
+
+          <div class="ops-brand-sub">
+            ENERGY SYSTEMS
+          </div>
+        </div>
+
+        <div class="ops-online">
+          <span class="online-dot"></span>
+          INFRASTRUCTURE
+        </div>
+
+      </header>
+
+      <div class="ops-title-block">
+
+        <button
+          class="node-back"
+          type="button"
+          onclick="closeNodeRegistration()">
+          ← CENTRAL OPERATIONS
+        </button>
+
+        <div class="ops-eyebrow">
+          INFRASTRUCTURE CONTROL
+        </div>
+
+        <h1 class="ops-title">
+          NODE REGISTRATION
+        </h1>
+
+      </div>
+
+      <div class="node-card">
+
+        <div class="node-label">
+          NEXT AVAILABLE UNIT
+        </div>
+
+        <div
+          class="node-id"
+          id="nodeId">
+          NODE-001
+        </div>
+
+        <div
+          class="node-state"
+          id="nodeState">
+          READY FOR REGISTRATION
+        </div>
+
+        <div
+          class="node-ring"
+          id="nodeRing">
+
+          <div class="node-ring-symbol">
+            N
+          </div>
+
+        </div>
+
+        <button
+          id="nodeScanButton"
+          type="button"
+          onclick="registerNode()">
+          SCAN NODE TAG
+        </button>
+
+        <div id="nodeStatus">
+          NODE INTERFACE READY
+        </div>
+
+      </div>
+
+      <footer class="ops-footer">
+        <span>NEXORA // NODE NETWORK</span>
+        <span>ROOT AUTHORIZED</span>
+      </footer>
+
+    </div>
+
+  </section>
+
+
   <script>
 
     const API =
@@ -1177,6 +1434,8 @@
 
 
     let scanActive = false;
+    let nodeScanActive = false;
+    let currentNodeId = null;
 
 
     /* =========================================================
@@ -1626,6 +1885,405 @@
         0,
         0
       );
+
+    }
+
+
+    /* =========================================================
+       NODE REGISTRATION
+       ========================================================= */
+
+    async function openNodeRegistration() {
+
+      document.getElementById(
+        "operationsView"
+      ).style.display = "none";
+
+      document.getElementById(
+        "nodeView"
+      ).style.display = "block";
+
+      window.scrollTo(0, 0);
+
+      await loadNextFreeNode();
+
+    }
+
+
+    function closeNodeRegistration() {
+
+      if (nodeScanActive) {
+        return;
+      }
+
+      document.getElementById(
+        "nodeView"
+      ).style.display = "none";
+
+      document.getElementById(
+        "operationsView"
+      ).style.display = "block";
+
+      window.scrollTo(0, 0);
+
+    }
+
+
+    async function loadNextFreeNode() {
+
+      const nodeId =
+        document.getElementById(
+          "nodeId"
+        );
+
+      const nodeState =
+        document.getElementById(
+          "nodeState"
+        );
+
+      const nodeStatus =
+        document.getElementById(
+          "nodeStatus"
+        );
+
+      const button =
+        document.getElementById(
+          "nodeScanButton"
+        );
+
+      nodeStatus.className = "";
+      nodeStatus.innerText =
+        "CHECKING NODE REGISTER...";
+
+      button.disabled = true;
+
+      try {
+
+        const response =
+          await fetch(
+            API +
+            "?action=nextfreenode",
+            {
+              method: "GET",
+              cache: "no-store"
+            }
+          );
+
+        if (!response.ok) {
+          throw new Error(
+            "HTTP " +
+            response.status
+          );
+        }
+
+        const result =
+          await response.json();
+
+        if (
+          result.ok !== true
+        ) {
+          throw new Error(
+            result.error ||
+            "NODE REGISTER ERROR"
+          );
+        }
+
+        currentNodeId =
+          result.nextFreeNode;
+
+        if (!currentNodeId) {
+
+          nodeId.innerText =
+            "NO FREE NODE";
+
+          nodeState.innerText =
+            "REGISTER COMPLETE";
+
+          nodeStatus.className =
+            "success";
+
+          nodeStatus.innerText =
+            "ALL 15 NODES ARE REGISTERED";
+
+          button.disabled = true;
+          return;
+
+        }
+
+        nodeId.innerText =
+          currentNodeId;
+
+        nodeState.innerText =
+          "READY FOR REGISTRATION";
+
+        nodeStatus.innerText =
+          "NODE INTERFACE READY\n\n" +
+          "PRESENT PASSIVE NODE TAG";
+
+        button.disabled = false;
+
+      } catch (error) {
+
+        currentNodeId = null;
+
+        nodeState.innerText =
+          "DATABASE ERROR";
+
+        nodeStatus.className =
+          "error";
+
+        nodeStatus.innerText =
+          "NODE DATABASE ERROR\n\n" +
+          error.message;
+
+        button.disabled = true;
+
+      }
+
+    }
+
+
+    async function registerNode() {
+
+      const nodeStatus =
+        document.getElementById(
+          "nodeStatus"
+        );
+
+      const nodeState =
+        document.getElementById(
+          "nodeState"
+        );
+
+      const button =
+        document.getElementById(
+          "nodeScanButton"
+        );
+
+      const ring =
+        document.getElementById(
+          "nodeRing"
+        );
+
+      if (!("NDEFReader" in window)) {
+
+        nodeStatus.className =
+          "error";
+
+        nodeStatus.innerText =
+          "NFC INTERFACE NOT AVAILABLE\n\n" +
+          "Chrome auf einem NFC-fähigen Android-Gerät verwenden.";
+
+        return;
+
+      }
+
+      if (
+        nodeScanActive ||
+        !currentNodeId
+      ) {
+        return;
+      }
+
+      try {
+
+        nodeScanActive = true;
+
+        button.disabled = true;
+        button.innerText =
+          "SCANNING...";
+
+        nodeState.innerText =
+          "WAITING FOR NFC TAG";
+
+        nodeStatus.className = "";
+        nodeStatus.innerText =
+          currentNodeId +
+          "\n\nNFC INTERFACE ACTIVE";
+
+        ring.classList.add(
+          "pulse"
+        );
+
+        const reader =
+          new NDEFReader();
+
+        await reader.scan();
+
+        reader.onreading =
+          async event => {
+
+            reader.onreading = null;
+
+            ring.classList.remove(
+              "pulse"
+            );
+
+            const uid =
+              event.serialNumber;
+
+            if (!uid) {
+
+              finishNodeError(
+                "NODE TAG DETECTED\n\n" +
+                "UID NOT AVAILABLE"
+              );
+
+              return;
+
+            }
+
+            nodeState.innerText =
+              "REGISTERING";
+
+            nodeStatus.innerText =
+              "NODE TAG DETECTED\n\n" +
+              "UID // " +
+              uid +
+              "\n\nREGISTERING " +
+              currentNodeId +
+              "...";
+
+            const url =
+              API +
+              "?action=registernode" +
+              "&node=" +
+              encodeURIComponent(
+                currentNodeId
+              ) +
+              "&uid=" +
+              encodeURIComponent(uid);
+
+            try {
+
+              const response =
+                await fetch(
+                  url,
+                  {
+                    method: "GET",
+                    cache: "no-store"
+                  }
+                );
+
+              if (!response.ok) {
+                throw new Error(
+                  "HTTP " +
+                  response.status
+                );
+              }
+
+              const result =
+                await response.json();
+
+              if (result.ok !== true) {
+                throw new Error(
+                  result.error ||
+                  "NODE REGISTRATION FAILED"
+                );
+              }
+
+              nodeState.innerText =
+                "REGISTERED // AVAILABLE";
+
+              nodeStatus.className =
+                "success";
+
+              nodeStatus.innerText =
+                "NODE REGISTRATION COMPLETE\n\n" +
+                result.node +
+                "\n\nUID // " +
+                result.uid +
+                "\n\nSTATUS // " +
+                result.status;
+
+              button.innerText =
+                "REGISTERED";
+
+              nodeScanActive = false;
+
+              await wait(1300);
+
+              await loadNextFreeNode();
+
+              button.innerText =
+                "SCAN NODE TAG";
+
+            } catch (error) {
+
+              finishNodeError(
+                "NODE DATABASE ERROR\n\n" +
+                error.message
+              );
+
+            }
+
+          };
+
+
+        reader.onreadingerror =
+          () => {
+
+            finishNodeError(
+              "NFC READ ERROR\n\n" +
+              "Node Tag erneut an das Gerät halten."
+            );
+
+          };
+
+
+      } catch (error) {
+
+        finishNodeError(
+          "NFC ERROR\n\n" +
+          error.message
+        );
+
+      }
+
+    }
+
+
+    function finishNodeError(message) {
+
+      nodeScanActive = false;
+
+      const ring =
+        document.getElementById(
+          "nodeRing"
+        );
+
+      const nodeStatus =
+        document.getElementById(
+          "nodeStatus"
+        );
+
+      const nodeState =
+        document.getElementById(
+          "nodeState"
+        );
+
+      const button =
+        document.getElementById(
+          "nodeScanButton"
+        );
+
+      ring.classList.remove(
+        "pulse"
+      );
+
+      nodeState.innerText =
+        "REGISTRATION ERROR";
+
+      nodeStatus.className =
+        "error";
+
+      nodeStatus.innerText =
+        message;
+
+      button.disabled = false;
+
+      button.innerText =
+        "SCAN NODE TAG";
 
     }
 
