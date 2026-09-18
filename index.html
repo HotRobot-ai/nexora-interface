@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="theme-color" content="#03070d">
+
+  <title>NEXORA // IDENTITY</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: #03070d;
+    }
+
+    body {
+      min-height: 100vh;
+      color: #eaf6ff;
+      font-family: Arial, Helvetica, sans-serif;
+      text-align: center;
+      background:
+        radial-gradient(
+          circle at 50% 18%,
+          #0d2a43 0%,
+          #071725 32%,
+          #030912 68%,
+          #02050a 100%
+        );
+    }
+
+    .container {
+      width: 100%;
+      max-width: 500px;
+      min-height: 100vh;
+      margin: 0 auto;
+      padding:
+        34px
+        22px
+        28px;
+
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 7px;
+      margin-left: 7px;
+    }
+
+    .subbrand {
+      margin-top: 8px;
+      color: #5bc7ff;
+      font-size: 10px;
+      letter-spacing: 5px;
+      margin-left: 5px;
+    }
+
+    .line {
+      height: 1px;
+      margin: 26px 0 12px;
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          #168bd2,
+          #62d6ff,
+          #168bd2,
+          transparent
+        );
+
+      box-shadow:
+        0 0 12px
+        rgba(22, 139, 210, 0.8);
+    }
+
+    .network {
+      color: #557b92;
+      font-size: 9px;
+      letter-spacing: 3px;
+    }
+
+    .scanner-area {
+      flex: 1;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      padding:
+        25px
+        0
+        20px;
+    }
+
+    .identity-ring {
+      position: relative;
+
+      width: 180px;
+      height: 180px;
+
+      margin:
+        0 auto
+        40px;
+
+      border:
+        1px solid
+        #1f668e;
+
+      border-radius: 50%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      box-shadow:
+        0 0 30px
+        rgba(35, 169, 240, 0.12),
+        inset 0 0 30px
+        rgba(35, 169, 240, 0.06);
+
+      transition:
+        0.4s ease;
+    }
+
+    .identity-ring::before {
+      content: "";
+
+      position: absolute;
+
+      width: 145px;
+      height: 145px;
+
+      border:
+        1px dashed
+        #174866;
+
+      border-radius: 50%;
+    }
+
+    .identity-ring::after {
+      content: "";
+
+      position: absolute;
+
+      width: 205px;
+      height: 205px;
+
+      border:
+        1px solid
+        rgba(22, 139, 210, 0.12);
+
+      border-radius: 50%;
+    }
+
+    .n-symbol {
+      position: relative;
+      z-index: 2;
+
+      font-size: 72px;
+      font-weight: 700;
+
+      color: #e9fbff;
+
+      text-shadow:
+        0 0 10px #168bd2,
+        0 0 28px #168bd2;
+    }
+
+    .mode {
+      min-height: 18px;
+
+      color: #5bc7ff;
+
+      font-size: 11px;
+      letter-spacing: 3px;
+
+      margin-bottom: 12px;
+    }
+
+    .instruction {
+      min-height: 42px;
+
+      color: #91a8b7;
+
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    button {
+      width: 100%;
+
+      padding: 19px 15px;
+
+      margin-top: 25px;
+
+      background:
+        linear-gradient(
+          180deg,
+          #0b94dd,
+          #0873ad
+        );
+
+      border:
+        1px solid
+        #36b8ff;
+
+      border-radius: 5px;
+
+      color: #ffffff;
+
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 4px;
+
+      box-shadow:
+        0 0 18px
+        rgba(22, 139, 210, 0.25);
+
+      cursor: pointer;
+
+      transition:
+        0.2s ease;
+    }
+
+    button:active {
+      transform:
+        scale(0.985);
+
+      background:
+        #0aa7ff;
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: default;
+    }
+
+    #status {
+      margin-top: 28px;
+
+      padding:
+        20px
+        15px;
+
+      min-height: 92px;
+
+      border:
+        1px solid
+        #17374c;
+
+      background:
+        rgba(5, 14, 24, 0.78);
+
+      white-space: pre-line;
+
+      line-height: 1.7;
+
+      font-size: 13px;
+
+      transition:
+        0.35s ease;
+    }
+
+    .success {
+      color: #62e6a7;
+
+      border-color:
+        #24684d !important;
+
+      box-shadow:
+        0 0 25px
+        rgba(98, 230, 167, 0.12);
+    }
+
+    .error {
+      color: #ff7373;
+
+      border-color:
+        #703838 !important;
+    }
+
+    .footer {
+      margin-top: 24px;
+
+      color: #36576b;
+
+      font-size: 8px;
+      letter-spacing: 3px;
+    }
+
+    .confirmed-ring {
+      border-color:
+        #62e6a7 !important;
+
+      box-shadow:
+        0 0 42px
+        rgba(98, 230, 167, 0.32),
+        inset 0 0 28px
+        rgba(98, 230, 167, 0.10)
+        !important;
+    }
+
+    .pulse {
+      animation:
+        pulse 1.4s
+        infinite;
+    }
+
+    @keyframes pulse {
+
+      0% {
+        box-shadow:
+          0 0 20px
+          rgba(22, 139, 210, 0.12);
+      }
+
+      50% {
+        box-shadow:
+          0 0 42px
+          rgba(22, 139, 210, 0.34);
+      }
+
+      100% {
+        box-shadow:
+          0 0 20px
+          rgba(22, 139, 210, 0.12);
+      }
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+  <header>
+
+    <div class="brand">
+      NEXORA
+    </div>
+
+    <div class="subbrand">
+      ENERGY SYSTEMS
+    </div>
+
+    <div class="line"></div>
+
+    <div class="network">
+      IDENTITY ACCESS NETWORK
+    </div>
+
+  </header>
+
+
+  <main class="scanner-area">
+
+    <div
+      class="identity-ring"
+      id="identityRing">
+
+      <div class="n-symbol">
+        N
+      </div>
+
+    </div>
+
+
+    <div
+      class="mode"
+      id="mode">
+
+      IDENTITY // STANDBY
+
+    </div>
+
+
+    <div
+      class="instruction"
+      id="instruction">
+
+      Initiate identity verification.
+
+    </div>
+
+
+    <button
+      id="scanButton"
+      type="button"
+      onclick="identify()">
+
+      IDENTIFY
+
+    </button>
+
+
+    <div id="status">
+      SYSTEM READY
+    </div>
+
+  </main>
+
+
+  <footer class="footer">
+    NEXORA // SECURE ACCESS
+  </footer>
+
+</div>
+
+
+<script>
+
+const API =
+  "https://script.google.com/macros/s/AKfycby1cZye2Z46M2ydV6-TcurgOwmS8H4Bh6eXZJ3Z76TUs2oPO5eq6l-RGL0AyVQmfpeM3w/exec";
+
+
+let scanActive = false;
+
+
+
+async function identify() {
+
+  const status =
+    document.getElementById(
+      "status"
+    );
+
+  const button =
+    document.getElementById(
+      "scanButton"
+    );
+
+  const mode =
+    document.getElementById(
+      "mode"
+    );
+
+  const instruction =
+    document.getElementById(
+      "instruction"
+    );
+
+  const ring =
+    document.getElementById(
+      "identityRing"
+    );
+
+
+  /*
+   * Web NFC prüfen.
+   */
+
+  if (!("NDEFReader" in window)) {
+
+    status.className =
+      "error";
+
+    status.innerText =
+      "NFC INTERFACE NOT AVAILABLE\n\n" +
+      "Chrome auf einem NFC-fähigen Android-Gerät verwenden.";
+
+    return;
+
+  }
+
+
+  if (scanActive) {
+    return;
+  }
+
+
+  try {
+
+    scanActive = true;
+
+
+    button.disabled =
+      true;
+
+    button.innerText =
+      "SCANNING...";
+
+
+    mode.innerText =
+      "IDENTITY // SCANNING";
+
+
+    instruction.innerText =
+      "Present NEXORA Access Card";
+
+
+    status.className =
+      "";
+
+    status.innerText =
+      "NFC INTERFACE ACTIVE\n\n" +
+      "WAITING FOR ACCESS CARD";
+
+
+    ring.classList.add(
+      "pulse"
+    );
+
+
+    /*
+     * NFC Scanner starten.
+     */
+
+    const reader =
+      new NDEFReader();
+
+
+    await reader.scan();
+
+
+    reader.onreading =
+      async event => {
+
+
+        /*
+         * Nur einen Scan verarbeiten.
+         */
+
+        reader.onreading =
+          null;
+
+
+        ring.classList.remove(
+          "pulse"
+        );
+
+
+        const uid =
+          event.serialNumber;
+
+
+        if (!uid) {
+
+          deny(
+            "CARD DETECTED\n\n" +
+            "UID NOT AVAILABLE"
+          );
+
+          return;
+
+        }
+
+
+        mode.innerText =
+          "IDENTITY // VERIFYING";
+
+
+        instruction.innerText =
+          "Verifying access credentials";
+
+
+        status.className =
+          "";
+
+        status.innerText =
+          "ACCESS CARD DETECTED\n\n" +
+          "UID // " +
+          uid +
+          "\n\n" +
+          "AUTHENTICATING...";
+
+
+        /*
+         * Founder Card gegen
+         * NEXORA Backend prüfen.
+         */
+
+        const url =
+          API +
+          "?action=identify" +
+          "&uid=" +
+          encodeURIComponent(uid);
+
+
+        try {
+
+          const response =
+            await fetch(
+              url,
+              {
+                method: "GET",
+                cache: "no-store"
+              }
+            );
+
+
+          if (!response.ok) {
+
+            throw new Error(
+              "HTTP " +
+              response.status
+            );
+
+          }
+
+
+          const result =
+            await response.json();
+
+
+          /*
+           * IDENTITÄT BESTÄTIGT
+           */
+
+          if (
+            result.ok === true &&
+            result.authenticated === true
+          ) {
+
+            mode.innerText =
+              "IDENTITY CONFIRMED";
+
+
+            instruction.innerText =
+              result.identity +
+              " // " +
+              result.role;
+
+
+            status.className =
+              "success";
+
+
+            status.innerText =
+              "IDENTITY CONFIRMED\n\n" +
+              result.identity +
+              " // " +
+              result.role +
+              "\n\n" +
+              "SYSTEM ACCESS // " +
+              result.clearance;
+
+
+            ring.classList.add(
+              "confirmed-ring"
+            );
+
+
+            button.innerText =
+              "ACCESS GRANTED";
+
+
+            /*
+             * Noch KEINE automatische
+             * Weiterleitung.
+             *
+             * Sobald dieser echte
+             * Founder-Scan funktioniert,
+             * bauen wir hier
+             * CENTRAL OPERATIONS ein.
+             */
+
+            return;
+
+          }
+
+
+          /*
+           * Unbekannte Access Card.
+           */
+
+          deny(
+            "ACCESS DENIED\n\n" +
+            "UNRECOGNIZED ACCESS CARD\n\n" +
+            "UID // " +
+            uid
+          );
+
+
+        } catch (error) {
+
+          deny(
+            "IDENTITY DATABASE ERROR\n\n" +
+            error.message
+          );
+
+        }
+
+      };
+
+
+    reader.onreadingerror =
+      () => {
+
+        deny(
+          "NFC READ ERROR\n\n" +
+          "Access Card erneut an das Gerät halten."
+        );
+
+      };
+
+
+  } catch (error) {
+
+    deny(
+      "NFC ERROR\n\n" +
+      error.message
+    );
+
+  }
+
+}
+
+
+
+function deny(message) {
+
+  const status =
+    document.getElementById(
+      "status"
+    );
+
+  const button =
+    document.getElementById(
+      "scanButton"
+    );
+
+  const mode =
+    document.getElementById(
+      "mode"
+    );
+
+  const instruction =
+    document.getElementById(
+      "instruction"
+    );
+
+  const ring =
+    document.getElementById(
+      "identityRing"
+    );
+
+
+  scanActive =
+    false;
+
+
+  ring.classList.remove(
+    "pulse"
+  );
+
+
+  mode.innerText =
+    "IDENTITY // DENIED";
+
+
+  instruction.innerText =
+    "Access credentials rejected";
+
+
+  status.className =
+    "error";
+
+
+  status.innerText =
+    message;
+
+
+  button.disabled =
+    false;
+
+
+  button.innerText =
+    "IDENTIFY";
+
+}
+
+</script>
+
+</body>
+</html>
