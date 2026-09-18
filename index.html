@@ -891,6 +891,23 @@
     }
 
     /* =========================================================
+       NODE CONTROL / DETAIL
+       ========================================================= */
+    .node-mode-switch{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}
+    .node-mode-button{padding:12px 10px;border:1px solid #173b51;border-radius:4px;background:rgba(5,15,24,.78);color:#557b92;font-size:9px;font-weight:700;letter-spacing:2px;cursor:pointer}
+    .node-mode-button.selected{border-color:#36b8ff;color:#eaf6ff;box-shadow:0 0 16px rgba(22,139,210,.12)}
+    #nodeControlPanel{display:none}
+    .node-detail-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:18px}
+    .node-detail-row{padding:14px;border:1px solid #17374c;background:rgba(5,14,24,.78)}
+    .node-detail-key{color:#557b92;font-size:8px;letter-spacing:2px;margin-bottom:7px}
+    .node-detail-value{color:#eaf6ff;font-size:12px;letter-spacing:1px;overflow-wrap:anywhere}
+    .node-detail-value.available{color:#62e6a7}
+    .node-action-button{width:100%;margin-top:18px;padding:18px 15px;border:1px solid #36b8ff;border-radius:5px;background:linear-gradient(180deg,#0b94dd,#0873ad);color:#fff;font-size:13px;font-weight:700;letter-spacing:3px;cursor:pointer}
+    .node-action-button:disabled{opacity:.55;cursor:default}
+    .node-secondary-button{width:100%;margin-top:10px;padding:14px 12px;border:1px solid #173b51;border-radius:5px;background:rgba(5,15,24,.78);color:#91a8b7;font-size:10px;font-weight:700;letter-spacing:2px;cursor:pointer}
+    #nodeControlStatus{margin-top:18px;padding:17px 14px;min-height:70px;border:1px solid #17374c;background:rgba(5,14,24,.78);white-space:pre-line;line-height:1.7;font-size:12px}
+
+    /* =========================================================
        TABLET / DESKTOP
        ========================================================= */
 
@@ -1335,95 +1352,45 @@
        ======================================================= -->
 
   <section id="nodeView">
-
     <div class="node-shell">
-
       <header class="ops-header">
-
-        <div>
-          <div class="ops-brand-main">
-            NEXORA
-          </div>
-
-          <div class="ops-brand-sub">
-            ENERGY SYSTEMS
-          </div>
-        </div>
-
-        <div class="ops-online">
-          <span class="online-dot"></span>
-          INFRASTRUCTURE
-        </div>
-
+        <div><div class="ops-brand-main">NEXORA</div><div class="ops-brand-sub">ENERGY SYSTEMS</div></div>
+        <div class="ops-online"><span class="online-dot"></span>INFRASTRUCTURE</div>
       </header>
-
       <div class="ops-title-block">
-
-        <button
-          class="node-back"
-          type="button"
-          onclick="closeNodeRegistration()">
-          ← CENTRAL OPERATIONS
-        </button>
-
-        <div class="ops-eyebrow">
-          INFRASTRUCTURE CONTROL
-        </div>
-
-        <h1 class="ops-title">
-          NODE REGISTRATION
-        </h1>
-
+        <button class="node-back" type="button" onclick="closeNodeRegistration()">← CENTRAL OPERATIONS</button>
+        <div class="ops-eyebrow">INFRASTRUCTURE CONTROL</div>
+        <h1 class="ops-title">NODE CONTROL</h1>
       </div>
-
-      <div class="node-card">
-
-        <div class="node-label">
-          NEXT AVAILABLE UNIT
-        </div>
-
-        <div
-          class="node-id"
-          id="nodeId">
-          NODE-001
-        </div>
-
-        <div
-          class="node-state"
-          id="nodeState">
-          READY FOR REGISTRATION
-        </div>
-
-        <div
-          class="node-ring"
-          id="nodeRing">
-
-          <div class="node-ring-symbol">
-            N
-          </div>
-
-        </div>
-
-        <button
-          id="nodeScanButton"
-          type="button"
-          onclick="registerNode()">
-          SCAN NODE TAG
-        </button>
-
-        <div id="nodeStatus">
-          NODE INTERFACE READY
-        </div>
-
+      <div class="node-mode-switch">
+        <button id="nodeRegisterTab" class="node-mode-button selected" type="button" onclick="showNodeRegisterPanel()">REGISTER</button>
+        <button id="nodeControlTab" class="node-mode-button" type="button" onclick="showNodeControlPanel()">CONTROL</button>
       </div>
-
-      <footer class="ops-footer">
-        <span>NEXORA // NODE NETWORK</span>
-        <span>ROOT AUTHORIZED</span>
-      </footer>
-
+      <div class="node-card" id="nodeRegisterPanel">
+        <div class="node-label">NEXT AVAILABLE UNIT</div>
+        <div class="node-id" id="nodeId">NODE-001</div>
+        <div class="node-state" id="nodeState">READY FOR REGISTRATION</div>
+        <div class="node-ring" id="nodeRing"><div class="node-ring-symbol">N</div></div>
+        <button id="nodeScanButton" type="button" onclick="registerNode()">SCAN NODE TAG</button>
+        <div id="nodeStatus">NODE INTERFACE READY</div>
+      </div>
+      <div class="node-card" id="nodeControlPanel">
+        <div class="node-label">REGISTERED INFRASTRUCTURE</div>
+        <div class="node-id" id="controlNodeId">NODE // —</div>
+        <div class="node-state" id="controlNodeState">READY FOR IDENTIFICATION</div>
+        <div class="node-ring" id="controlNodeRing"><div class="node-ring-symbol">N</div></div>
+        <button class="node-action-button" id="controlNodeScanButton" type="button" onclick="identifyNodeForControl()">SCAN REGISTERED NODE</button>
+        <div class="node-detail-grid" id="nodeDetailGrid" style="display:none">
+          <div class="node-detail-row"><div class="node-detail-key">NODE ID</div><div class="node-detail-value" id="detailNodeId">—</div></div>
+          <div class="node-detail-row"><div class="node-detail-key">NFC UID</div><div class="node-detail-value" id="detailNodeUid">—</div></div>
+          <div class="node-detail-row"><div class="node-detail-key">STATUS</div><div class="node-detail-value available" id="detailNodeStatus">—</div></div>
+        </div>
+        <button class="node-action-button" id="deployNodeButton" type="button" onclick="prepareNodeDeployment()" style="display:none">DEPLOY NODE</button>
+        <button class="node-secondary-button" id="clearNodeButton" type="button" onclick="clearNodeControl()" style="display:none">CLEAR SELECTION</button>
+        <div id="nodeControlStatus">SCAN A REGISTERED NODE TAG TO OPEN ITS CONTROL RECORD.</div>
+      </div>
+      <footer class="ops-footer"><span>NEXORA // NODE NETWORK</span><span>ROOT AUTHORIZED</span></footer>
     </div>
-
   </section>
 
 
@@ -1436,6 +1403,8 @@
     let scanActive = false;
     let nodeScanActive = false;
     let currentNodeId = null;
+    let controlNodeScanActive = false;
+    let selectedNode = null;
 
 
     /* =========================================================
@@ -2285,6 +2254,142 @@
       button.innerText =
         "SCAN NODE TAG";
 
+    }
+
+
+    /* =========================================================
+       NODE CONTROL / DETAIL
+       ========================================================= */
+    function showNodeRegisterPanel() {
+      if (controlNodeScanActive) return;
+      document.getElementById("nodeRegisterPanel").style.display="block";
+      document.getElementById("nodeControlPanel").style.display="none";
+      document.getElementById("nodeRegisterTab").classList.add("selected");
+      document.getElementById("nodeControlTab").classList.remove("selected");
+    }
+
+    function showNodeControlPanel() {
+      if (nodeScanActive) return;
+      document.getElementById("nodeRegisterPanel").style.display="none";
+      document.getElementById("nodeControlPanel").style.display="block";
+      document.getElementById("nodeRegisterTab").classList.remove("selected");
+      document.getElementById("nodeControlTab").classList.add("selected");
+    }
+
+    async function identifyNodeForControl() {
+      const box=document.getElementById("nodeControlStatus");
+      const state=document.getElementById("controlNodeState");
+      const button=document.getElementById("controlNodeScanButton");
+      const ring=document.getElementById("controlNodeRing");
+
+      if (!("NDEFReader" in window)) {
+        box.className="error";
+        box.innerText="NFC INTERFACE NOT AVAILABLE\n\nChrome auf einem NFC-fähigen Android-Gerät verwenden.";
+        return;
+      }
+      if (controlNodeScanActive) return;
+
+      try {
+        controlNodeScanActive=true;
+        button.disabled=true;
+        button.innerText="SCANNING...";
+        state.innerText="WAITING FOR NFC TAG";
+        box.className="";
+        box.innerText="NFC INTERFACE ACTIVE\n\nPRESENT REGISTERED NODE TAG";
+        ring.classList.add("pulse");
+
+        const reader=new NDEFReader();
+        await reader.scan();
+
+        reader.onreading=async event=>{
+          reader.onreading=null;
+          ring.classList.remove("pulse");
+          const uid=event.serialNumber;
+          if (!uid) {
+            finishNodeControlError("NODE TAG DETECTED\n\nUID NOT AVAILABLE");
+            return;
+          }
+
+          state.innerText="VERIFYING NODE";
+          box.innerText="NODE TAG DETECTED\n\nUID // "+uid+"\n\nQUERYING NODE REGISTER...";
+
+          const url=API+"?action=identifynode&uid="+encodeURIComponent(uid);
+
+          try {
+            const response=await fetch(url,{method:"GET",cache:"no-store"});
+            if (!response.ok) throw new Error("HTTP "+response.status);
+            const result=await response.json();
+
+            if (result.ok!==true || result.found!==true)
+              throw new Error(result.error || "NODE NOT FOUND");
+
+            selectedNode={
+              node:result.node,
+              uid:result.uid || uid,
+              status:result.status || "UNKNOWN"
+            };
+
+            document.getElementById("controlNodeId").innerText=selectedNode.node;
+            state.innerText="NODE RECORD OPEN";
+            document.getElementById("detailNodeId").innerText=selectedNode.node;
+            document.getElementById("detailNodeUid").innerText=selectedNode.uid;
+            document.getElementById("detailNodeStatus").innerText=selectedNode.status;
+            document.getElementById("nodeDetailGrid").style.display="grid";
+            document.getElementById("deployNodeButton").style.display=
+              selectedNode.status==="AVAILABLE" ? "block" : "none";
+            document.getElementById("clearNodeButton").style.display="block";
+
+            box.className="success";
+            box.innerText="NODE IDENTIFIED\n\n"+selectedNode.node+"\n\nSTATUS // "+selectedNode.status;
+            button.innerText="NODE IDENTIFIED";
+            controlNodeScanActive=false;
+          } catch(error) {
+            finishNodeControlError("NODE DATABASE ERROR\n\n"+error.message);
+          }
+        };
+
+        reader.onreadingerror=()=>finishNodeControlError(
+          "NFC READ ERROR\n\nNode Tag erneut an das Gerät halten."
+        );
+      } catch(error) {
+        finishNodeControlError("NFC ERROR\n\n"+error.message);
+      }
+    }
+
+    function finishNodeControlError(message) {
+      controlNodeScanActive=false;
+      document.getElementById("controlNodeRing").classList.remove("pulse");
+      document.getElementById("controlNodeState").innerText="CONTROL ERROR";
+      const box=document.getElementById("nodeControlStatus");
+      box.className="error";
+      box.innerText=message;
+      const button=document.getElementById("controlNodeScanButton");
+      button.disabled=false;
+      button.innerText="SCAN REGISTERED NODE";
+    }
+
+    function clearNodeControl() {
+      if (controlNodeScanActive) return;
+      selectedNode=null;
+      document.getElementById("controlNodeId").innerText="NODE // —";
+      document.getElementById("controlNodeState").innerText="READY FOR IDENTIFICATION";
+      document.getElementById("nodeDetailGrid").style.display="none";
+      document.getElementById("deployNodeButton").style.display="none";
+      document.getElementById("clearNodeButton").style.display="none";
+      const box=document.getElementById("nodeControlStatus");
+      box.className="";
+      box.innerText="SCAN A REGISTERED NODE TAG TO OPEN ITS CONTROL RECORD.";
+      const button=document.getElementById("controlNodeScanButton");
+      button.disabled=false;
+      button.innerText="SCAN REGISTERED NODE";
+    }
+
+    function prepareNodeDeployment() {
+      if (!selectedNode) return;
+      const box=document.getElementById("nodeControlStatus");
+      box.className="";
+      box.innerText="DEPLOYMENT MODULE READY\n\n"+selectedNode.node+
+        "\n\nBackend status change is not enabled yet.";
     }
 
 
